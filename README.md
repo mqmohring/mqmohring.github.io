@@ -1,5 +1,5 @@
-This is a repository to showcase skills, share projects and track my progress in Data Analytics related topics.
-Let me know if you have any questions about any of the projects!
+# **This is a repository to showcase skills, share projects and track my progress in Data Analytics related topics.
+Let me know if you have any questions about any of the projects!**
 
 
 
@@ -8,7 +8,7 @@ Let me know if you have any questions about any of the projects!
 
 
 
--- SQL Project: Data Cleaning
+## **SQL Project: Data Cleaning**
 -- https://www.kaggle.com/datasets/swaptr/layoffs-2022
 
 
@@ -20,15 +20,15 @@ CREATE TABLE staging1 SELECT * FROM layoffs.layoffsraw;
 SELECT * FROM staging1;
 
 
--- steps to follow:
+###-- steps to follow:
 -- 1. clean duplicates
 -- 2. standardize data and fix errors
 -- 3. Populate blanks and manage NULLs
 -- 4. consider column or row downsizing
+###
 
 
-
--- 1. Clean duplicates
+###-- 1. Clean duplicates###
 SELECT *, ROW_NUMBER() OVER (PARTITION BY company, location, industry,total_laid_off,percentage_laid_off, `date`,stage, country,funds_raised) AS row_num FROM staging1;
 
 WITH duplicate_cte AS
@@ -38,7 +38,7 @@ SELECT * from duplicate_cte WHERE row_num > 1; -- shows empty = no duplicates
 
 
 
--- 2. Standardizing
+###-- 2. Standardizing###
 SELECT `date` , convert (`date` , date) FROM staging1;
 
 
@@ -49,7 +49,7 @@ SELECT DISTINCT industry FROM staging1; -- no typos under industry name
 SELECT DISTINCT country FROM staging1 GROUP BY country; -- no typos under country name
 
 
--- 3. Nulls and Blanks
+###-- 3. Nulls and Blanks###
 
 SELECT * FROM staging1 WHERE industry = '' OR industry IS NULL ORDER BY industry; -- one company without industry, but:
 SELECT * FROM staging1 WHERE company = 'Appsmith'; -- ...there are no other entries from where to populate the empty entry.
@@ -61,7 +61,7 @@ UPDATE staging1 SET percentage_laid_off = NULL WHERE percentage_laid_off ='';
 UPDATE staging1 SET total_laid_off = NULL WHERE total_laid_off =''; -- setting to NULL makes calculations easier during EDA phase
 
 
--- 4. remove useless rows/columns
+###-- 4. remove useless rows/columns###
  SELECT * FROM staging1
  WHERE total_laid_off IS NULL
  AND percentage_laid_off IS NULL;
