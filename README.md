@@ -1,4 +1,4 @@
-# This is a repository to showcase skills, share projects and track my progress in Data Analytics related topics. Let me know if you have any questions about any of the projects!
+## This is a repository to showcase skills, share projects and track my progress in Data Analytics related topics. Let me know if you have any questions about any of the projects!
 
 
 
@@ -7,7 +7,7 @@
 
 
 
-## SQL Project: Data Cleaning
+# SQL Project: Data Cleaning
 Source DB: 
 https://www.kaggle.com/datasets/swaptr/layoffs-2022
 
