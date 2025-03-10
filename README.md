@@ -32,9 +32,9 @@ SELECT * FROM staging1;
 
 SELECT *, ROW_NUMBER() OVER (PARTITION BY company, location, industry,total_laid_off,percentage_laid_off, `date`,stage, country,funds_raised) AS row_num FROM staging1;
 
-WITH duplicate_cte AS
+WITH duplicate_cte AS  
 (SELECT *, ROW_NUMBER() OVER (PARTITION BY company, location, industry,total_laid_off,percentage_laid_off, `date`,stage, country,funds_raised) AS row_num FROM staging1
-)
+)  
 SELECT * from duplicate_cte WHERE row_num > 1;   
 --> shows empty = no duplicates
 
@@ -62,7 +62,8 @@ SELECT * FROM staging1 WHERE company = 'Appsmith'; -- ...there are no other entr
 -- set the remaining blanks to nulls  
 
 UPDATE staging1 SET percentage_laid_off = NULL WHERE percentage_laid_off ='';  
-UPDATE staging1 SET total_laid_off = NULL WHERE total_laid_off =''; -- setting to NULL makes calculations easier during EDA phase  
+UPDATE staging1 SET total_laid_off = NULL WHERE total_laid_off ='';  
+-- setting to NULL makes calculations easier during EDA phase  
 
 
 ** 4. remove useless rows/columns **  
