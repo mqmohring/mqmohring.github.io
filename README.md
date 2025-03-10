@@ -15,12 +15,12 @@ https://www.kaggle.com/datasets/swaptr/layoffs-2022
 
 SELECT * FROM layoffsraw1;  
 
-** First of all, create a staging table  
+--First of all, create a staging table  
 CREATE TABLE staging2 SELECT * FROM layoffsraw1;  
 SELECT * FROM staging2;  
 
 
-## steps to follow:  
+### steps to follow:  
 -- 1. clean duplicates  
 -- 2. standardize data and fix errors  
 -- 3. Populate blanks and manage NULLs  
@@ -28,7 +28,7 @@ SELECT * FROM staging2;
 
 
 
-## 1. Clean duplicates  
+### 1. Clean duplicates  
   -- first check if any duplicates are present  
 WITH duplicate_cte AS  
 (SELECT *, ROW_NUMBER() OVER (PARTITION BY company, location, industry,total_laid_off,percentage_laid_off, `date`,stage, country,funds_raised) AS row_num FROM staging2
@@ -81,7 +81,7 @@ ALTER TABLE staging3
 DROP COLUMN row_num;
 
 
-## 2. Standardizing  
+### 2. Standardizing  
 
   -- first the date: we need only yyyymmdd  
 ALTER TABLE staging3 ADD COLUMN formatted_date DATE;  
@@ -114,8 +114,14 @@ SELECT * FROM staging3 WHERE company LIKE '&Paid' OR company LIKE '#Open'; -- th
 
 SELECT DISTINCT country FROM staging1 GROUP BY country ORDER BY country; -- no typos under country name  
 
+SELECT * FROM staging3  
+WHERE percentage_laid_off = (SELECT MIN(percentage_laid_off) FROM staging3); -- looks like a typo, will set it to NULL  
+  
+UPDATE staging3  
+SET percentage_laid_off = NULL  
+WHERE percentage_laid_off = 0;  
 
-## 3. Nulls and Blanks  
+### 3. Nulls and Blanks  
 
 SELECT * FROM staging1 WHERE industry = '' OR industry IS NULL ORDER BY industry; -- one company without industry, but:  
 SELECT * FROM staging1 WHERE company = 'Appsmith'; -- ...there are no other entries from where to populate the empty entry.  
@@ -127,7 +133,7 @@ UPDATE staging1 SET percentage_laid_off = NULL WHERE percentage_laid_off ='';
 UPDATE staging1 SET total_laid_off = NULL WHERE total_laid_off ='';  
 
 
-## 4. remove useless rows/columns    
+### 4. remove useless rows/columns    
  SELECT * FROM staging1  
  WHERE total_laid_off IS NULL  
  AND percentage_laid_off IS NULL;  
