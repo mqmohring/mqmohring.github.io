@@ -16,6 +16,7 @@ https://www.kaggle.com/datasets/swaptr/layoffs-2022
 SELECT * FROM layoffs.layoffsraw;
 
 -- First of all, create a staging table
+
 CREATE TABLE staging1 SELECT * FROM layoffs.layoffsraw;
 SELECT * FROM staging1;
 
